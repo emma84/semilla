@@ -11,5 +11,10 @@ public class Product {
     public Double  precioVenta;
     public Integer categoriaId;
     public Integer proveedorId; // <-- NUEVO
+    public Double  stockActual;  // unidades o gramos según unidadBase
+
+    @Override public String toString() {
+        return (nombre != null ? nombre : "Producto") + (precioVenta != null ? (" · $ " + String.format("%.2f", precioVenta)) : "");
+    }
 }
 
