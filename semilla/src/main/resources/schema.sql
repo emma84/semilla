@@ -124,3 +124,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_productos_codbar_unq
 ON productos(codigo_barra)
 WHERE codigo_barra IS NOT NULL AND codigo_barra <> '';
 
+CREATE INDEX IF NOT EXISTS idx_productos_nombre_ci
+ON productos(lower(nombre));
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_productos_codbar_unq
+ON productos(codigo_barra)
+WHERE codigo_barra IS NOT NULL AND codigo_barra <> '';
+
+CREATE INDEX IF NOT EXISTS idx_productos_nombre_ci ON productos(lower(nombre));
+

@@ -1,6 +1,8 @@
 package org.semilla.app.dao;
 
 import org.semilla.app.model.Provider;
+import javafx.util.StringConverter;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,10 @@ public class ProviderDao {
         }
         return out;
     }
+
+    // --- Aliases por compatibilidad con vistas que esperan estos nombres ---
+    public List<Provider> listAll() throws SQLException { return findAll(); }
+    public List<Provider> listAllActive() throws SQLException { return findAllActive(); }
 
     public Integer findIdByNameCI(String nombre) throws SQLException {
         try (PreparedStatement ps = cn.prepareStatement(
@@ -67,15 +73,24 @@ public class ProviderDao {
         }
     }
 
+    public static StringConverter<Provider> providerStringConverter() {
+        return new StringConverter<Provider>() {
+            @Override public String toString(Provider p) {
+                return p == null ? "" : (p.nombre == null || p.nombre.isBlank() ? ("#" + p.id) : p.nombre);
+            }
+            @Override public Provider fromString(String s) { return null; }
+        };
+    }
+
     private static Provider map(ResultSet rs) throws SQLException {
         Provider p = new Provider();
-        p.id = rs.getInt("id");
-        p.nombre = rs.getString("nombre");
-        p.cuit = rs.getString("cuit");
-        p.telefono = rs.getString("telefono");
-        p.email = rs.getString("email");
+        p.id        = rs.getInt("id");
+        p.nombre    = rs.getString("nombre");
+        p.cuit      = rs.getString("cuit");
+        p.telefono  = rs.getString("telefono");
+        p.email     = rs.getString("email");
         p.direccion = rs.getString("direccion");
-        p.activo = rs.getInt("activo");
+        p.activo    = rs.getInt("activo");
         return p;
     }
 }
